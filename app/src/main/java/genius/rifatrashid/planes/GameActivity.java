@@ -1,5 +1,7 @@
 package genius.rifatrashid.planes;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
@@ -90,6 +92,8 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         private boolean run;
         private GamePhysicsThread gamePhysicsThread;
         player Player;
+        Bitmap bgScroller;
+        Bitmap backgroundDraw;
 
         public GameLoopThread(SurfaceHolder surfaceHolder, Handler handler) {
             _surfaceHolder = surfaceHolder;
@@ -101,6 +105,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         public void doStart() {
             synchronized (_surfaceHolder) {
                 Player = new player(canvasWidth / 2, canvasHeight / 2);
+                bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.backgroundairplanes);
             }
         }
 
@@ -154,6 +159,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         private void doDraw(Canvas canvas) {
             if (run) {
                 canvas.save();
+                canvas.drawBitmap(backgroundDraw);
                 canvas.drawColor(Color.parseColor("#FFFFFF"));
                 Player.Draw(canvas);
 
@@ -168,6 +174,8 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             }
 
             public void update() {
+                backgroundDraw = Bitmap.createBitmap(bgScroller, bgScroller.getWidth()/2 - canvasWidth/2, bgScroller.getHeight()/2 - canvasHeight/2, canvasWidth, canvasHeight);
+
                 Player.setX(Player.getX() + 0.5f);
             }
         }
