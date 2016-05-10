@@ -7,7 +7,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="genius.rifatrashid.planes.MainActivity">
+    tools:context=".GameActivity">
 
     <SurfaceView
         android:layout_width="match_parent"
