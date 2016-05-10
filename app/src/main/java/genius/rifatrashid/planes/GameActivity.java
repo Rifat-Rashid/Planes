@@ -89,16 +89,18 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         static final long FPS_GAME = 60;
         private boolean run;
         private GamePhysicsThread gamePhysicsThread;
+        player Player;
 
         public GameLoopThread(SurfaceHolder surfaceHolder, Handler handler) {
             _surfaceHolder = surfaceHolder;
             handlerApplication = handler;
             gamePhysicsThread = new GamePhysicsThread();
+            run = true;
         }
 
         public void doStart() {
             synchronized (_surfaceHolder) {
-
+                Player = new player(canvasWidth / 2, canvasHeight / 2);
             }
         }
 
@@ -112,7 +114,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 try {
                     c = _surfaceHolder.lockCanvas(null);
                     synchronized (_surfaceHolder) {
-                        //gamePhysicsThread.update();
+                        gamePhysicsThread.update();
                         doDraw(c);
                     }
                 } catch (Exception e) {
@@ -149,24 +151,25 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         @Param Canvas
         function: draws all objects to screen
          */
-        private void doDraw(final Canvas canvas) {
+        private void doDraw(Canvas canvas) {
             if (run) {
                 canvas.save();
                 canvas.drawColor(Color.parseColor("#FFFFFF"));
+                Player.Draw(canvas);
 
             }
             canvas.restore();
         }
-    }
 
-    class GamePhysicsThread {
+        class GamePhysicsThread {
 
-        public GamePhysicsThread() {
+            public GamePhysicsThread() {
 
-        }
+            }
 
-        public void update() {
-
+            public void update() {
+                Player.setX(Player.getX() + 0.5f);
+            }
         }
     }
 }
