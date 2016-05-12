@@ -3,7 +3,6 @@ package genius.rifatrashid.planes;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +10,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
-
-import java.util.logging.LogRecord;
 
 public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
     private Handler handlerApplication;
@@ -106,7 +103,9 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         public void doStart() {
             synchronized (_surfaceHolder) {
                 Player = new player(canvasWidth / 2, canvasHeight / 2);
-                bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.backgroundairplanes);
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inScaled = true;
+                bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.bg, opts);
                 backgroundBitmap = new BackgroundBitmap(bgScroller,canvasWidth, canvasHeight);
             }
         }
@@ -176,10 +175,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
             public void update() {
                 //check bounds of background bitmap
-                if(backgroundBitmap.getX() + backgroundBitmap.getWidth() + 5 >= backgroundBitmap.getBigBackground().getWidth()){
-                    backgroundBitmap.resetCoordinates();
-                }
-                backgroundBitmap.setX(backgroundBitmap.getX() + 5);
+
             }
         }
     }
