@@ -94,6 +94,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         player Player;
         Bitmap bgScroller;
         Bitmap backgroundDraw;
+        BackgroundBitmap backgroundBitmap;
 
         public GameLoopThread(SurfaceHolder surfaceHolder, Handler handler) {
             _surfaceHolder = surfaceHolder;
@@ -106,6 +107,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             synchronized (_surfaceHolder) {
                 Player = new player(canvasWidth / 2, canvasHeight / 2);
                 bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.backgroundairplanes);
+                backgroundBitmap = new BackgroundBitmap(bgScroller,canvasWidth, canvasHeight);
             }
         }
 
@@ -159,8 +161,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         private void doDraw(Canvas canvas) {
             if (run) {
                 canvas.save();
-                canvas.drawBitmap(backgroundDraw);
-                canvas.drawColor(Color.parseColor("#FFFFFF"));
+                backgroundBitmap.Draw(canvas);
                 Player.Draw(canvas);
 
             }
@@ -168,15 +169,17 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
 
         class GamePhysicsThread {
-
+            int tempVar = 0;
             public GamePhysicsThread() {
 
             }
 
             public void update() {
-                backgroundDraw = Bitmap.createBitmap(bgScroller, bgScroller.getWidth()/2 - canvasWidth/2, bgScroller.getHeight()/2 - canvasHeight/2, canvasWidth, canvasHeight);
-
-                Player.setX(Player.getX() + 0.5f);
+                //check bounds of background bitmap
+                if(backgroundBitmap.getX() + backgroundBitmap.getWidth() + 5 >= backgroundBitmap.getBigBackground().getWidth()){
+                    backgroundBitmap.resetCoordinates();
+                }
+                backgroundBitmap.setX(backgroundBitmap.getX() + 5);
             }
         }
     }
