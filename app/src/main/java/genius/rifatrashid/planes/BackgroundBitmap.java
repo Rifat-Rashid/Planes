@@ -14,6 +14,7 @@ public class BackgroundBitmap {
     private int x, y, width, height;
     private Bitmap BigBackground;
     //private Bitmap screenBackground;
+    private int deltaX = 0;
 
     public BackgroundBitmap() {
 
@@ -25,7 +26,7 @@ public class BackgroundBitmap {
         this.height = height;
         this.x = BigBackground.getWidth() / 2 - width / 2;
         this.y = BigBackground.getHeight() / 2 - height / 2;
-
+        deltaX = BigBackground.getWidth()/125;
     }
 
     public void resetCoordinates() {
@@ -37,7 +38,7 @@ public class BackgroundBitmap {
     public void Draw(Canvas canvas) {
         //screenBackground = Bitmap.createBitmap(BigBackground, this.x, this.y, width, height);
         //Increase X coordinate (move image right)
-        this.x += 5;
+        this.x += deltaX;
         //calculate the distance between device top right X coordinate and the larger background
         int distanceFromBorder = this.BigBackground.getWidth() - (this.x + this.width);
         if(this.x >= this.BigBackground.getWidth()){

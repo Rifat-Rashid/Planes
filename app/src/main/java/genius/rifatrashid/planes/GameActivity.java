@@ -85,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
     class GameLoopThread extends Thread {
         private int canvasHeight = 0;
         private int canvasWidth = 0;
-        static final long FPS_GAME = 60;
+        static final long FPS_GAME = 20;
         private boolean run;
         private GamePhysicsThread gamePhysicsThread;
         player Player;
@@ -106,7 +106,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inScaled = true;
                 bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.bg, opts);
-                backgroundBitmap = new BackgroundBitmap(bgScroller,canvasWidth, canvasHeight);
+                backgroundBitmap = new BackgroundBitmap(bgScroller, canvasWidth, canvasHeight);
             }
         }
 
@@ -130,6 +130,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         _surfaceHolder.unlockCanvasAndPost(c);
                     }
                 }
+
             }
         }
 
@@ -167,8 +168,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             canvas.restore();
         }
 
-        class GamePhysicsThread {
-            int tempVar = 0;
+        class GamePhysicsThread extends Thread {
             public GamePhysicsThread() {
 
             }
