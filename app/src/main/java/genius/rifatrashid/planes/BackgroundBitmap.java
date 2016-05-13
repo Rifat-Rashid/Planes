@@ -35,11 +35,14 @@ public class BackgroundBitmap {
         System.out.println("Players X coordinate reset");
     }
 
+    /**
+     @Param Canvas
+     used to draw objects
+     */
     public void Draw(Canvas canvas) {
         //screenBackground = Bitmap.createBitmap(BigBackground, this.x, this.y, width, height);
-        //Increase X coordinate (move image right)
-        this.x += deltaX;
         //calculate the distance between device top right X coordinate and the larger background
+        this.x += deltaX;
         int distanceFromBorder = this.BigBackground.getWidth() - (this.x + this.width);
         if(this.x >= this.BigBackground.getWidth()){
             this.x = 0;
@@ -55,6 +58,7 @@ public class BackgroundBitmap {
             canvas.drawBitmap(BigBackground, new Rect(this.x, this.y, this.x + this.width, this.y + this.height), new Rect(0, 0, this.width, this.height), null);
         }
     }
+
 
     public Bitmap getBigBackground() {
         return this.BigBackground;

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
@@ -177,13 +178,21 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             canvas.restore();
         }
 
+        /**
+         *@Class control physics update of canvas objects
+         */
         class GamePhysicsThread extends Thread {
+            long startTime;
+            long lastStartTime;
+
             public GamePhysicsThread() {
 
             }
 
+            /**
+             @Param milliseconds passed since last update
+             */
             public void update() {
-                //check bounds of background bitmap
 
             }
         }

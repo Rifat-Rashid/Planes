@@ -15,4 +15,9 @@
         android:id="@+id/surfaceView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <genius.rifatrashid.planes.JoyStickControl
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>
