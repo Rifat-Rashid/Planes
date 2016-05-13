@@ -85,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
     class GameLoopThread extends Thread {
         private int canvasHeight = 0;
         private int canvasWidth = 0;
-        static final long FPS_GAME = 20;
+        static final long FPS_GAME = 60;
         private boolean run;
         private GamePhysicsThread gamePhysicsThread;
         player Player;
@@ -103,9 +103,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         public void doStart() {
             synchronized (_surfaceHolder) {
                 Player = new player(canvasWidth / 2, canvasHeight / 2);
-                BitmapFactory.Options opts = new BitmapFactory.Options();
-                opts.inScaled = true;
-                bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.bg, opts);
+                bgScroller = BitmapFactory.decodeResource(getResources(), R.raw.backt);
                 backgroundBitmap = new BackgroundBitmap(bgScroller, canvasWidth, canvasHeight);
             }
         }
@@ -116,6 +114,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             long sleepTime;
 
             while (run) {
+                startTime = System.currentTimeMillis();
                 Canvas c = null;
                 try {
                     c = _surfaceHolder.lockCanvas(null);
@@ -128,6 +127,16 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 } finally {
                     if (c != null) {
                         _surfaceHolder.unlockCanvasAndPost(c);
+                    }
+                    sleepTime = System.currentTimeMillis() - startTime;
+                    if(sleepTime <= ticksFPS){
+                        try {
+                            thread.sleep(ticksFPS - sleepTime);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+
                     }
                 }
 

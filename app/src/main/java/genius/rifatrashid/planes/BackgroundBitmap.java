@@ -46,6 +46,7 @@ public class BackgroundBitmap {
             this.y = BigBackground.getHeight() / 2 - height / 2;
             System.out.println("Reset Player Location");
         }
+        System.out.println(canvas.getWidth() + " " + canvas.getHeight() + " " + canvas.getDensity());
         if (distanceFromBorder <= 0) {
             //draw 2 part bitmaps
             canvas.drawBitmap(BigBackground, new Rect(this.x, this.y, this.x + this.width - Math.abs(distanceFromBorder), this.y + this.height), new Rect(0, 0, this.width - Math.abs(distanceFromBorder), this.height), null);
@@ -53,7 +54,6 @@ public class BackgroundBitmap {
         } else {
             canvas.drawBitmap(BigBackground, new Rect(this.x, this.y, this.x + this.width, this.y + this.height), new Rect(0, 0, this.width, this.height), null);
         }
-
     }
 
     public Bitmap getBigBackground() {
