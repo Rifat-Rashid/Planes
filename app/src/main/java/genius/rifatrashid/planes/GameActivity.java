@@ -9,15 +9,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+    /**
+     @GameLoopThread manages drawing calls and physics calculations
+     @see GameLoopThread
+     */
     private Handler handlerApplication;
     private SurfaceHolder _surfaceHolder;
     private SurfaceView _surfaceView;
     private GameLoopThread thread;
 
+    /**
+     *@Class JoyStickControl - custom UI component for joystick controller
+     */
+    private JoyStickControl mJoyStickControl;
+
+    /**
+     *
+     * @param savedInstanceState Bundle with saved instances such as onPause, onResume etc...
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //set view to full screen
@@ -30,6 +44,8 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
+
+        mJoyStickControl = (JoyStickControl) findViewById(R.id.joystickControllerView);
     }
 
     @Override

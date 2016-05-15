@@ -22,6 +22,12 @@ public class JoyStickControl extends View {
     private int controllerHeight = 0;
 
     /**
+     * JoySticksControl's xml (X & Y) position on the screen
+     */
+    private int controllerViewX;
+    private int controllerViewY;
+
+    /**
      * Paint to be used for UI component
      *@see JoyStickControl for implementation of BorderCirclePaint
      */
@@ -43,6 +49,26 @@ public class JoyStickControl extends View {
         BorderCirclePaint.setStyle(Paint.Style.STROKE);
         BorderCirclePaint.setStrokeWidth(2.75f);
         BorderCirclePaint.setAntiAlias(true);
+    }
+
+    /**
+     * @onFinishInflate Called after a view and all of its children has been inflated from XML.
+     */
+   @Override
+   public void onFinishInflate(){
+       super.onFinishInflate();
+
+   }
+
+    /**
+     * @param x coordinate of the desired X
+     */
+    public void setJoyStickControllerViewX(float x){
+        getRootView().setX(x);
+    }
+
+    public void setJoyStickControllerViewY(float y){
+        getRootView().setY(y);
     }
 
     /**
