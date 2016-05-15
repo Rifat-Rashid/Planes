@@ -104,7 +104,9 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         public void doStart() {
             synchronized (_surfaceHolder) {
                 Player = new player(canvasWidth / 2, canvasHeight / 2);
-                bgScroller = BitmapFactory.decodeResource(getResources(), R.raw.backt);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inScaled = false;
+                bgScroller = BitmapFactory.decodeResource(getResources(), R.raw.fieldbackground, options);
                 backgroundBitmap = new BackgroundBitmap(bgScroller, canvasWidth, canvasHeight);
             }
         }
