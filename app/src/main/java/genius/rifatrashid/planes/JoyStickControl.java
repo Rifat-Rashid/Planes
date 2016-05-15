@@ -29,9 +29,12 @@ public class JoyStickControl extends View {
 
     /**
      * Paint to be used for UI component
-     *@see JoyStickControl for implementation of BorderCirclePaint
+     *
+     * @see JoyStickControl for implementation of BorderCirclePaint
      */
     private Paint BorderCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    private Context mContext;
 
     /**
      * Simple constructor to use when creating a view from code.
@@ -40,34 +43,35 @@ public class JoyStickControl extends View {
      *                access the current theme, resources, etc.
      */
     public JoyStickControl(Context context, AttributeSet attributes) {
-        super(context,attributes);
+        super(context, attributes);
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         controllerWidth = (int) (display.getWidth() / 3);
         controllerHeight = (int) (display.getHeight() / 3);
+        setJoyStickControllerViewX(display.getWidth() / 2 - this.controllerWidth / 2);
+        setJoyStickControllerViewY(display.getHeight() % 5);
         BorderCirclePaint.setColor(Color.parseColor("#FFFFFF"));
         BorderCirclePaint.setStyle(Paint.Style.STROKE);
-        BorderCirclePaint.setStrokeWidth(2.75f);
+        BorderCirclePaint.setStrokeWidth(5.75f);
         BorderCirclePaint.setAntiAlias(true);
     }
 
     /**
      * @onFinishInflate Called after a view and all of its children has been inflated from XML.
      */
-   @Override
-   public void onFinishInflate(){
-       super.onFinishInflate();
-
-   }
+    @Override
+    public void onFinishInflate() {
+        super.onFinishInflate();
+    }
 
     /**
      * @param x coordinate of the desired X
      */
-    public void setJoyStickControllerViewX(float x){
+    public void setJoyStickControllerViewX(float x) {
         getRootView().setX(x);
     }
 
-    public void setJoyStickControllerViewY(float y){
+    public void setJoyStickControllerViewY(float y) {
         getRootView().setY(y);
     }
 
@@ -80,26 +84,26 @@ public class JoyStickControl extends View {
     }
 
     /**
-     *@return width of UI component int Integer form
+     * @return width of UI component int Integer form
      */
     public int getDesiredWidth() {
         return this.controllerWidth;
     }
 
     /**
-     *@return height of UI component in Integer form
+     * @return height of UI component in Integer form
      */
     public int getDesiredHeight() {
         return this.controllerHeight;
     }
 
     /**
-     @Param canvas: passed through rootView to ChildView -> used to draw on the layout at layout inflation
+     * @Param canvas: passed through rootView to ChildView -> used to draw on the layout at layout inflation
      */
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.drawCircle(controllerWidth/2, controllerHeight/2, controllerWidth/2, BorderCirclePaint);
+        canvas.drawCircle(controllerWidth / 2, controllerHeight / 2, controllerWidth / 2, BorderCirclePaint);
         canvas.restore();
     }
 }
