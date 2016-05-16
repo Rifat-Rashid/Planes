@@ -33,6 +33,7 @@ public class JoyStickControl extends View {
      * @see JoyStickControl for implementation of BorderCirclePaint
      */
     private Paint BorderCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint InnerCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private Context mContext;
 
@@ -42,18 +43,28 @@ public class JoyStickControl extends View {
      * @param context The Context the view is running in, through which it can
      *                access the current theme, resources, etc.
      */
+    @SuppressWarnings("deprecation")
     public JoyStickControl(Context context, AttributeSet attributes) {
         super(context, attributes);
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        controllerWidth = (int) (display.getWidth() / 3);
-        controllerHeight = (int) (display.getHeight() / 3);
+        controllerWidth = (int) (display.getWidth() / 2);
+        controllerHeight = (int) (display.getHeight() / 2);
         setJoyStickControllerViewX(display.getWidth() / 2 - this.controllerWidth / 2);
-        setJoyStickControllerViewY(display.getHeight() % 5);
+        setJoyStickControllerViewY(display.getHeight()/2 + this.controllerHeight/8);
+    }
+
+    /**
+     * @void setup paints for canvas drawing
+     */
+    public void setupPaint(){
         BorderCirclePaint.setColor(Color.parseColor("#FFFFFF"));
         BorderCirclePaint.setStyle(Paint.Style.STROKE);
-        BorderCirclePaint.setStrokeWidth(5.75f);
+        BorderCirclePaint.setStrokeWidth(4.50f);
         BorderCirclePaint.setAntiAlias(true);
+        InnerCirclePaint.setAntiAlias(true);
+        InnerCirclePaint.setStyle(Paint.Style.STROKE);
+        InnerCirclePaint.setStrokeWidth(9.0f);
     }
 
     /**
@@ -103,7 +114,8 @@ public class JoyStickControl extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.drawCircle(controllerWidth / 2, controllerHeight / 2, controllerWidth / 2, BorderCirclePaint);
+        canvas.drawCircle(controllerWidth / 2, controllerHeight / 2, controllerWidth / 3, BorderCirclePaint);
+        canvas.drawCircle(controllerWidth/2, controllerHeight/2, controllerWidth/6, BorderCirclePaint);
         canvas.restore();
     }
 }

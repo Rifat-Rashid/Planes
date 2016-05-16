@@ -39,6 +39,9 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         super.onCreate(savedInstanceState);
         getWindow().setFlags(0xFFFFFFFF, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         //inflate layout
         setContentView(R.layout.activity_main);
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
@@ -122,7 +125,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 Player = new player(canvasWidth / 2, canvasHeight / 2);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inScaled = false;
-                bgScroller = BitmapFactory.decodeResource(getResources(), R.raw.fieldbackground, options);
+                bgScroller = BitmapFactory.decodeResource(getResources(), R.drawable.fieldbackgroundnodpi, options);
                 backgroundBitmap = new BackgroundBitmap(bgScroller, canvasWidth, canvasHeight);
             }
         }
