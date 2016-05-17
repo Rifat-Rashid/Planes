@@ -33,7 +33,7 @@ public class BackgroundBitmap {
     public void resetCoordinates() {
         this.x = width;
         this.y = BigBackground.getHeight() / 2 - height / 2;
-        System.out.println("Players X coordinate reset");
+        //System.out.println("Players X coordinate reset");
     }
 
     /**

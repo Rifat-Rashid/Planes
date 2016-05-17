@@ -90,7 +90,7 @@ public class JoyStickControl extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 joyStickActive = false;
-                circleCoordinates.set(e.getX(), e.getY());
+                circleCoordinates.set(controllerWidth/2, controllerHeight/2);
                 this.invalidate();
                 break;
         }
@@ -153,6 +153,8 @@ public class JoyStickControl extends View {
         //larger circle
 
         canvas.drawCircle(controllerWidth / 2, controllerHeight / 2, controllerWidth / 3, BorderCirclePaint);
+        canvas.drawCircle(circleCoordinates.x, circleCoordinates.y, controllerWidth / 6, BorderCirclePaint);
+
         //smaller
         /*
         if(isLarger(pX,pY)){
