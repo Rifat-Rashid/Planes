@@ -3,6 +3,8 @@ package genius.rifatrashid.planes;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,13 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private SurfaceHolder _surfaceHolder;
     private SurfaceView _surfaceView;
     private GameLoopThread thread;
+
+    /**
+     *@variable fpsCounter -> var keeping track of fps count
+     */
+    private String fpsCounter = "";
+
+    private Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     /**
      *@Class JoyStickControl - custom UI component for joystick controller
@@ -49,6 +58,9 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
         _surfaceHolder.addCallback(this);
 
         mJoyStickControl = (JoyStickControl) findViewById(R.id.joystickControllerView);
+        p.setColor(Color.BLACK);
+        p.setAntiAlias(true);
+        p.setTextSize(45f);
     }
 
     @Override
@@ -134,9 +146,11 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
             long ticksFPS = 1000 / FPS_GAME;
             long startTime;
             long sleepTime;
+            final int max_skip_frames = 2;
+            int skipframes = 0;
 
             while (run) {
-                startTime = System.currentTimeMillis();
+                startTime = SystemClock.currentThreadTimeMillis();
                 Canvas c = null;
                 try {
                     c = _surfaceHolder.lockCanvas(null);
@@ -150,18 +164,22 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     if (c != null) {
                         _surfaceHolder.unlockCanvasAndPost(c);
                     }
-                    sleepTime = System.currentTimeMillis() - startTime;
-                    if(sleepTime <= ticksFPS){
+                    sleepTime = SystemClock.currentThreadTimeMillis() - startTime;
+                    fpsCounter = String.valueOf(1000/sleepTime);
+                    if (sleepTime <= ticksFPS) {
                         try {
-                            thread.sleep(ticksFPS - sleepTime);
+                            sleep(Math.max(ticksFPS - sleepTime, 0));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }else{
-
+                    } else {
+                        skipframes++;
+                    }
+                    while(skipframes >= max_skip_frames){
+                        gamePhysicsThread.update();
+                        skipframes--;
                     }
                 }
-
             }
         }
 
@@ -194,6 +212,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 canvas.save();
                 backgroundBitmap.Draw(canvas);
                 Player.Draw(canvas);
+                canvas.drawText(fpsCounter, canvasWidth - 130, 100, p);
 
             }
             canvas.restore();
@@ -214,7 +233,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
              @Param milliseconds passed since last update
              */
             public void update() {
-
+                backgroundBitmap.update();
             }
         }
     }

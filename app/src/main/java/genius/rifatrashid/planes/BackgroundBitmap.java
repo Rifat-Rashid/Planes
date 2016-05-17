@@ -15,6 +15,7 @@ public class BackgroundBitmap {
     private Bitmap BigBackground;
     //private Bitmap screenBackground;
     private int deltaX = 0;
+    private int distanceFromBorder;
 
     public BackgroundBitmap() {
 
@@ -42,13 +43,6 @@ public class BackgroundBitmap {
     public void Draw(Canvas canvas) {
         //screenBackground = Bitmap.createBitmap(BigBackground, this.x, this.y, width, height);
         //calculate the distance between device top right X coordinate and the larger background
-        this.x += deltaX;
-        int distanceFromBorder = this.BigBackground.getWidth() - (this.x + this.width);
-        if(this.x >= this.BigBackground.getWidth()){
-            this.x = 0;
-            this.y = BigBackground.getHeight() / 2 - height / 2;
-            System.out.println("Reset Player Location");
-        }
         System.out.println(canvas.getWidth() + " " + canvas.getHeight() + " " + canvas.getDensity());
         if (distanceFromBorder <= 0) {
             //draw 2 part bitmaps
@@ -56,6 +50,16 @@ public class BackgroundBitmap {
             canvas.drawBitmap(BigBackground, new Rect(0, this.y, Math.abs(distanceFromBorder), this.y + this.height), new Rect(this.width - Math.abs(distanceFromBorder), 0, this.width, this.height), null);
         } else {
             canvas.drawBitmap(BigBackground, new Rect(this.x, this.y, this.x + this.width, this.y + this.height), new Rect(0, 0, this.width, this.height), null);
+        }
+    }
+
+    public void update(){
+        this.x += deltaX;
+        distanceFromBorder = this.BigBackground.getWidth() - (this.x + this.width);
+        if(this.x >= this.BigBackground.getWidth()){
+            this.x = 0;
+            this.y = BigBackground.getHeight() / 2 - height / 2;
+            System.out.println("Reset Player Location");
         }
     }
 
