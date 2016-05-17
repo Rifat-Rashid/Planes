@@ -156,7 +156,7 @@ public class GameActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     c = _surfaceHolder.lockCanvas(null);
                     synchronized (_surfaceHolder) {
                         gamePhysicsThread.update();
-                        doDraw(c);
+                         doDraw(c);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
