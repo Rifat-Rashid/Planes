@@ -160,14 +160,16 @@ public class JoyStickControl extends View {
         //smaller
         if(isLarger(pX,pY)){
             Point second = new Point();
-            //second = calcReal(pX,pY);
+            second = calcReal(new Point(pX,pY));
         }
         canvas.drawCircle(pX, pY, controllerWidth / 6, BorderCirclePaint);
         //canvas.restore();
     }
     public Point calcReal(Point first){
         angle = (int)(Math.atan2(pX-controllerWidth/2,pY-controllerHeight/2));
-        return first;
+        Point second = new Point();
+        second.set((int)((controllerWidth/2)*Math.cos(angle)),(int)((controllerWidth/2)*Math.sin(angle)));
+        return second;
     }
     public boolean isLarger(int pX, int pY){
         return Math.abs(pX*pX+pY*pY)>=controllerWidth/3;
