@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -24,8 +25,7 @@ public class JoyStickControl extends View {
      */
     private int controllerWidth = 0;
     private int controllerHeight = 0;
-    public int pX;
-    public int pY;
+    private PointF circleCoordinates;
     public int angle;
 
     /**
@@ -60,8 +60,7 @@ public class JoyStickControl extends View {
         setJoyStickControllerViewX(display.getWidth() / 2 - this.controllerWidth / 2);
         setJoyStickControllerViewY(display.getHeight() / 2 + this.controllerHeight / 8);
         setupPaint();
-        pY = controllerHeight / 2;
-        pX = controllerWidth / 2;
+        circleCoordinates = new PointF(controllerWidth / 2, controllerHeight / 2);
     }
 
     /**
@@ -82,19 +81,16 @@ public class JoyStickControl extends View {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 joyStickActive = true;
-                pY = (int) e.getY();
-                pX = (int) e.getX();
+                circleCoordinates.set(e.getX(), e.getY());
                 this.invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                pY = (int) e.getY();
-                pX = (int) e.getX();
+                circleCoordinates.set(e.getX(), e.getY());
                 this.invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 joyStickActive = false;
-                pY = controllerHeight / 2;
-                pX = controllerWidth / 2;
+                circleCoordinates.set(e.getX(), e.getY());
                 this.invalidate();
                 break;
         }
@@ -158,20 +154,38 @@ public class JoyStickControl extends View {
 
         canvas.drawCircle(controllerWidth / 2, controllerHeight / 2, controllerWidth / 3, BorderCirclePaint);
         //smaller
+        /*
         if(isLarger(pX,pY)){
             Point second = new Point();
             second = calcReal(new Point(pX,pY));
+            canvas.drawCircle(second.x, second.y, controllerWidth / 6, BorderCirclePaint);
         }
-        canvas.drawCircle(pX, pY, controllerWidth / 6, BorderCirclePaint);
+        System.out.println(isLarger(pX,pY))
+        else{
+            canvas.drawCircle(pX, pY, controllerWidth / 6, BorderCirclePaint);
+        }
+*/
+        System.out.println(Math.abs(calculateDistanceBetween(new PointF(controllerWidth / 2, controllerHeight / 2), circleCoordinates)));
+        //if (Math.abs(calculateDistanceBetween(new PointF(controllerWidth / 2, controllerHeight / 2), circleCoordinates)) >= controllerWidth / 2) {
+         //   System.out.println()
+        //}
         //canvas.restore();
     }
+
+    /*
     public Point calcReal(Point first){
         angle = (int)(Math.atan2(pX-controllerWidth/2,pY-controllerHeight/2));
         Point second = new Point();
         second.set((int)((controllerWidth/2)*Math.cos(angle)),(int)((controllerWidth/2)*Math.sin(angle)));
         return second;
     }
-    public boolean isLarger(int pX, int pY){
-        return Math.abs(pX*pX+pY*pY)>=controllerWidth/3;
+    */
+    public boolean isLarger(int pX, int pY) {
+        return Math.abs(pX * pX + pY * pY) >= controllerWidth / 3;
     }
+
+    public float calculateDistanceBetween(PointF p1, PointF p2) {
+        return (float) (Math.sqrt(Math.pow((p1.x - p2.x), 2) + Math.pow((p1.y - p2.y), 2)));
+    }
+
 }
