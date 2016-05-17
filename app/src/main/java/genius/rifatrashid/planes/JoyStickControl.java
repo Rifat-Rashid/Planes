@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -15,11 +17,16 @@ import java.util.jar.Attributes;
  * Created by rifatrashid on 5/13/16.
  */
 public class JoyStickControl extends View {
+    private boolean joyStickActive = false;
+
     /**
      * @see JoyStickControl for controllerWidth, controllerHeight implementation
      */
     private int controllerWidth = 0;
     private int controllerHeight = 0;
+    public int pX;
+    public int pY;
+    public int angle;
 
     /**
      * JoySticksControl's xml (X & Y) position on the screen
@@ -49,15 +56,18 @@ public class JoyStickControl extends View {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         controllerWidth = (int) (display.getWidth() / 2);
-        controllerHeight = (int) (display.getHeight() / 2);
+        controllerHeight = (int) (display.getWidth() / 2);
         setJoyStickControllerViewX(display.getWidth() / 2 - this.controllerWidth / 2);
-        setJoyStickControllerViewY(display.getHeight()/2 + this.controllerHeight/8);
+        setJoyStickControllerViewY(display.getHeight() / 2 + this.controllerHeight / 8);
+        setupPaint();
+        pY = controllerHeight / 2;
+        pX = controllerWidth / 2;
     }
 
     /**
      * @void setup paints for canvas drawing
      */
-    public void setupPaint(){
+    public void setupPaint() {
         BorderCirclePaint.setColor(Color.parseColor("#FFFFFF"));
         BorderCirclePaint.setStyle(Paint.Style.STROKE);
         BorderCirclePaint.setStrokeWidth(4.50f);
@@ -65,6 +75,30 @@ public class JoyStickControl extends View {
         InnerCirclePaint.setAntiAlias(true);
         InnerCirclePaint.setStyle(Paint.Style.STROKE);
         InnerCirclePaint.setStrokeWidth(9.0f);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                joyStickActive = true;
+                pY = (int) e.getY();
+                pX = (int) e.getX();
+                this.invalidate();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                pY = (int) e.getY();
+                pX = (int) e.getX();
+                this.invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                joyStickActive = false;
+                pY = controllerHeight / 2;
+                pX = controllerWidth / 2;
+                this.invalidate();
+                break;
+        }
+        return true;
     }
 
     /**
@@ -113,9 +147,29 @@ public class JoyStickControl extends View {
      */
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.save();
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        //canvas.save();
+        //larger circle
+
         canvas.drawCircle(controllerWidth / 2, controllerHeight / 2, controllerWidth / 3, BorderCirclePaint);
-        canvas.drawCircle(controllerWidth/2, controllerHeight/2, controllerWidth/6, BorderCirclePaint);
-        canvas.restore();
+        //smaller
+        if(isLarger(pX,pY)){
+            Point second = new Point();
+            //second = calcReal(pX,pY);
+        }
+        canvas.drawCircle(pX, pY, controllerWidth / 6, BorderCirclePaint);
+        //canvas.restore();
+    }
+    public Point calcReal(Point first){
+        angle = (int)(Math.atan2(pX-controllerWidth/2,pY-controllerHeight/2));
+        return first;
+    }
+    public boolean isLarger(int pX, int pY){
+        return Math.abs(pX*pX+pY*pY)>=controllerWidth/3;
     }
 }
